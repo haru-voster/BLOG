@@ -1,0 +1,5 @@
+asgiref
+django===5.0.2
+Pillow
+sqlparse
+tzdata
