@@ -7,6 +7,7 @@ from django.conf import settings
 from .models import *
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 
 from .models import Comment,Post
 # Create your views here.
@@ -61,7 +62,7 @@ def signin(request):
                 messages.info(request, 'Username or Password Incorrect.')
                 return redirect("signin")
         else:
-            messages.info(request, 'Your account is not active. Please wait for admin approval')
+            messages.info(request, 'Thank you for Registering. Please contact/whatsapp admin for approval')
             return redirect("signin")
 
     return render(request, "signin.html")
@@ -121,12 +122,27 @@ def profileedit(request,id):
         'user':User.objects.get(id=id),
     })
     
-def increaselikes(request,id):
+def increaselikes(request, id):
+    post = Post.objects.get(id=id)
     if request.method == 'POST':
-        post = Post.objects.get(id=id)
-        post.likes += 1
-        post.save() 
-    return redirect("index")
+        # Check if the user is authenticated
+        if not request.user.is_authenticated:
+            # Store anonymous likes in session to prevent multiple likes
+            liked_posts = request.session.get('liked_posts', [])
+            if id not in liked_posts:
+                post.likes += 1
+                post.save()
+                liked_posts.append(id)
+                request.session['liked_posts'] = liked_posts
+                messages.success(request, "You liked this post.")
+            else:
+                messages.warning(request, "You have already liked this post.")
+        else:
+            post.likes += 1
+            post.save()
+
+    return redirect('post', id=id)
+
 
 
 def post(request,id):
@@ -141,18 +157,33 @@ def post(request,id):
         'total_comments': len(Comment.objects.filter(post_id = post.id))
     })
     
-def savecomment(request,id):
+def savecomment(request, id):
     post = Post.objects.get(id=id)
     if request.method == 'POST':
-        content = request.POST['message']
-        Comment(post_id = post.id,user_id = request.user.id, content = content).save()
-        return redirect("index")
-    
-def deletecomment(request,id):
-    comment = Comment.objects.get(id=id)
-    postid = comment.post.id
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        content = request.POST.get('message')
+
+        if not request.user.is_authenticated:
+            # For anonymous users
+            if not name or not email:
+                messages.error(request, "Name and email are required for commenting.")
+                return redirect('post', id=id)
+            Comment(post_id=post.id, name=name, email=email, content=content).save()
+        else:
+            # For authenticated users
+            Comment(post_id=post.id, user_id=request.user.id, content=content).save()
+
+        messages.success(request, "Your comment has been posted.")
+        return redirect('post', id=id)
+
+@login_required
+def deletecomment(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    post_id = comment.post.id  # Get the post ID before deletion
     comment.delete()
-    return post(request,postid)
+    messages.success(request, "Comment deleted successfully.")
+    return redirect('post', id=post_id)
 
 @login_required
 def editpost(request,id):

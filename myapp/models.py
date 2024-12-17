@@ -21,12 +21,12 @@ class Post(models.Model):
     
     
 class Comment(models.Model):
-    content = models.CharField(max_length=200)
-    time = models.CharField(default=time,max_length=100, blank=True)
-    post = models.ForeignKey(Post,on_delete=models.CASCADE)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    def __str__(self):
-        return  f"{self.id}.{self.content[:20]}..."
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    content = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
     
     
 
