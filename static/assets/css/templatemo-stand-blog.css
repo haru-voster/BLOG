@@ -995,7 +995,7 @@ footer p a:hover {
 
 
 /* Responsive Style */
-@media (max-width: 1250px) {
+@media (max-width: 900px)  {
 	.owl-banner .owl-nav .owl-prev {
 		left: 0px;
 	}
@@ -1012,13 +1012,13 @@ footer p a:hover {
 		font-size: 20px;
 	}
 }
-@media (max-width: 768px) {
+@media (max-width: 720px) {
 	.owl-banner .owl-nav {
 		display: none;
 	}
 }
 
-@media (max-width: 992px) {
+@media screen and (max-width: 700px) {
 	.navbar .navbar-brand {
 		position: absolute;
 		left: 30px;
