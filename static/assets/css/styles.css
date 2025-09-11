@@ -27,3 +27,7 @@
       height: auto; 
     }
   }
+  .carousel-item img {
+  object-fit: cover;   /* keeps aspect ratio without stretching */
+  height: 500px;       /* adjust to your preferred height */
+}
