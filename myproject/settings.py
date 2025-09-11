@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "myapp"
+    "myapp",
+    "tinymce",
+    "ckeditor",
+    "ckeditor_uploader"
 ]
 
 MIDDLEWARE = [
@@ -118,6 +121,8 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [STATIC_DIR]
 MEDIA_URL = "media/"
 MEDIA_ROOT = MEDIA_DIR
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

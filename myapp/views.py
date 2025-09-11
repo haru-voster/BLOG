@@ -9,6 +9,8 @@ from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 
+#aded script
+
 from .models import Comment,Post
 # Create your views here.
 def index(request):

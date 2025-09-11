@@ -130,7 +130,8 @@
           <input type="text" class="form-control" name="postname" required>
         </div>
         <label for="" class="form-label">Content</label>
-        <textarea class="form-control" name="content" required></textarea>
+         <textarea class="form-control" name="content" id="editor" required></textarea>
+
         <label for="" class="form-label">Category</label>
         <input type="text" class="form-control" name="category" required>
         <label for="" class="form-label">Upload Image</label>
@@ -141,6 +142,22 @@
         <p class="text-danger">{{message}}</p>
         {% endfor %}
       </form>
+      <!-- CKEditor Script (place just before </body>) -->
+        <script src="https://cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('editor', {
+                height: 300,
+                toolbar: [
+                    { name: 'clipboard',   items: [ 'Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo' ] },
+                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                    { name: 'paragraph',   items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
+                    { name: 'styles',      items: [ 'FontSize', 'Format' ] },
+                    { name: 'colors',      items: [ 'TextColor', 'BGColor' ] },
+                    { name: 'insert',      items: [ 'Image', 'Table', 'Link', 'Unlink' ] },
+                    { name: 'tools',       items: [ 'Maximize', 'Source' ] }
+                ]
+            });
+        </script>
 
     </div>
   </div>

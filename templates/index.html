@@ -158,7 +158,7 @@
                         class="fa fa-heart text-danger"></i></button>
                   </form>
 
-                  <p class="mt-2">{{post.content|slice:"0:100"}}...</p>
+                  <p class="mt-2">{{post.content|safe|slice:"0:100"}}...</p>
                   <p class="small text-primary">{{post.time}} </p>
                 </div>
               </div>

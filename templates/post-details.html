@@ -40,7 +40,7 @@
                   <li><a href="#">{{post.time}}</a></li>
                   <li><a href="#">{{total_comments}} Comments</a></li>
                 </ul>
-                <p>{{post.content}}</p>
+                <p>{{post.content|safe}}</p>
 
                 <!-- Like Button Form -->
                 <form method="POST" action="{% url 'increaselikes' post.id %}">

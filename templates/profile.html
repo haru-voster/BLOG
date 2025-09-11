@@ -297,7 +297,7 @@
                                                             style="border:2px solid rgb(64, 108, 251); border-radius: 5px; background-color: rgb(141, 169, 246);">Edit</button></a>
                                                     <span
                                                         class="text-white bg-success rounded-3 px-2 rounded-2">{{post.category}}</span>
-                                                    <p>{{post.content|slice:"0:20"}}...</p>
+                                                    <p>{{post.content|safe|slice:"0:20"}}...</p>
                                                     <p class="small text-primary">{{post.time}}<span
                                                             class="text-danger float-right">Likes :
                                                             {{post.likes}}</span></p>

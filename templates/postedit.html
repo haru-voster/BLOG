@@ -127,7 +127,7 @@
           <input type="text" class="form-control" name="postname" value="{{post.postname}}" required>
         </div>
         <label for="" class="form-label">Content</label>
-        <textarea class="form-control" name="content" required>{{post.content}}</textarea>
+        <textarea class="form-control" name="content" required> {{post.content|safe}}</textarea>
         <label for="" class="form-label">Category</label>
         <input type="text" class="form-control" name="category" value="{{post.category}}" required>
         <button class="btn">Update Post</button>
