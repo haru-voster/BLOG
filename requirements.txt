@@ -3,4 +3,4 @@ django
 Pillow
 sqlparse
 tzdatapip 
-install django-tinymce
+django-tinymce
