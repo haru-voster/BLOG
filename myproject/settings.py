@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "myapp",
     "tinymce",
     "ckeditor",
-    "ckeditor_uploader"
+    "ckeditor_uploader",
 ]
 
 MIDDLEWARE = [
