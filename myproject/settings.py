@@ -27,9 +27,10 @@ MEDIA_DIR = os.path.join(BASE_DIR,"media")
 SECRET_KEY = "django-insecure-s0eg9q5^i%wy4n5m78yvbpwkb3j3u)w8nx=pr&c6+ag8ltvs5t"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['blogpost.haruvoster.co.ke', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://blogpost.haruvoster.co.ke']
 
 
 # Application definition
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -117,13 +119,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+# STATIC_URL = "static/"
+# STATICFILES_DIRS = [STATIC_DIR]
+# MEDIA_URL = "media/"
+# MEDIA_ROOT = MEDIA_DIR
+# CKEDITOR_UPLOAD_PATH = "uploads/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [STATIC_DIR]
-MEDIA_URL = "media/"
-MEDIA_ROOT = MEDIA_DIR
+STATIC_ROOT = "/home/akxorbla/blogpost.haruvoster.co.ke/static"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "/home/akxorbla/blogpost.haruvoster.co.ke/media"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CKEDITOR_IMAGE_BACKEND = "pillow"

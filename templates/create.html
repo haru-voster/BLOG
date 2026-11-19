@@ -17,37 +17,65 @@
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-
-
   <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/templatemo-stand-blog.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+
   <style>
-    form {
-      margin-top: 200px;
-      width: 50%;
+    /* Page wrapper: clears the fixed header, never forces a fixed height */
+    .create-wrapper {
+      padding: 140px 15px 60px;
+      min-height: 100vh;
     }
 
-    h3 {
+    /* Scoped to the create form only (no longer affects the logout form) */
+    .create-form {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .create-form h3 {
       color: rgb(237, 63, 63);
       font-weight: 500;
       font-size: 30px;
       margin-bottom: 20px;
     }
 
-    .btn {
+    .create-form .form-label {
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .create-form .btn-submit {
       margin-top: 30px;
       background: rgb(236, 88, 88);
       width: 100%;
       color: #fff;
       font-size: 20px;
-      padding: 5px;
+      padding: 8px;
+      border: 1px solid transparent;
     }
 
-    .btn:hover {
+    .create-form .btn-submit:hover {
       background: transparent;
       color: rgb(237, 63, 63);
       border: 1px solid rgb(237, 63, 63);
+    }
+
+    /* Hide CKEditor's version warning banner */
+    .cke_notification_warning {
+      display: none !important;
+    }
+
+    /* Keep CKEditor inside its container */
+    .cke {
+      max-width: 100% !important;
     }
 
     a {
@@ -57,12 +85,35 @@
 
     a:hover {
       color: rgb(237, 63, 63);
-      letter-spacing: 1px;
     }
 
-    @media screen and (max-width:600px) {
-      form {
-        width: 100%;
+    /* Tablets and phones */
+    @media screen and (max-width: 768px) {
+      .create-wrapper {
+        padding-top: 110px;
+      }
+
+      .create-form {
+        padding: 1.25rem;
+      }
+
+      .create-form h3 {
+        font-size: 24px;
+      }
+    }
+
+    @media screen and (max-width: 576px) {
+      .create-wrapper {
+        padding: 100px 10px 40px;
+      }
+
+      .create-form {
+        padding: 1rem;
+        border-radius: 0;
+      }
+
+      .create-form .btn-submit {
+        font-size: 18px;
       }
     }
   </style>
@@ -77,16 +128,14 @@
         <a class="navbar-brand" href="{% url 'index' %}">
           <h2>MC<span style="color: orangered;">Tips</span></h2>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
           aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li>
-              <a class="nav-link" href="{% url 'index' %}">Home
-                <span class="sr-only">(current)</span>
-              </a>
+          <ul class="navbar-nav ms-auto ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'index' %}">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'blog' %}">Blogs</a>
@@ -100,10 +149,9 @@
               <a class="nav-link" href="{% url 'profile' user.id %}">Profile</a>
             </li>
             <li class="nav-item">
-              
               <form action="{% url 'logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-link nav-item nav-link" style="color: #4b35d9;">LOGOUT</button>
+                <button type="submit" class="btn btn-link nav-link" style="color: #4b35d9;">LOGOUT</button>
               </form>
             </li>
             {% else %}
@@ -118,51 +166,68 @@
   </header>
 
   <!-- Page Content -->
+  <div class="create-wrapper">
+    <form action="{% url 'create' %}" class="create-form" method="post" enctype="multipart/form-data"
+      id="createForm">
+      {% csrf_token %}
+      <h3>Create Blog</h3>
 
-  <div class="container">
-    <div class="d-flex justify-content-center align-items-center " style="height: 100vh;">
+      <label for="postname" class="form-label">Title</label>
+      <input type="text" class="form-control" name="postname" id="postname" required>
 
-      <form action="{% url 'create' %}" class="p-5 shadow" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <h3 class="mt-4 mb-4">Create Blog</h3>
-        <label for="" class="form-label">Title</label>
-        <div class="input-group">
-          <input type="text" class="form-control" name="postname" required>
-        </div>
-        <label for="" class="form-label">Content</label>
-         <textarea class="form-control" name="content" id="editor" required></textarea>
+      <label for="editor" class="form-label">Content</label>
+      <textarea class="form-control" name="content" id="editor"></textarea>
 
-        <label for="" class="form-label">Category</label>
-        <input type="text" class="form-control" name="category" required>
-        <label for="" class="form-label">Upload Image</label>
-        <input type="file" class="form-control" name="image">
-        <button class="btn">Create Blog</button>
-        <br>
-        {% for message in messages %}
-        <p class="text-danger">{{message}}</p>
-        {% endfor %}
-      </form>
-      <!-- CKEditor Script (place just before </body>) -->
-        <script src="https://cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
-        <script>
-            CKEDITOR.replace('editor', {
-                height: 300,
-                toolbar: [
-                    { name: 'clipboard',   items: [ 'Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo' ] },
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
-                    { name: 'paragraph',   items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
-                    { name: 'styles',      items: [ 'FontSize', 'Format' ] },
-                    { name: 'colors',      items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'insert',      items: [ 'Image', 'Table', 'Link', 'Unlink' ] },
-                    { name: 'tools',       items: [ 'Maximize', 'Source' ] }
-                ]
-            });
-        </script>
+      <label for="category" class="form-label">Category</label>
+      <input type="text" class="form-control" name="category" id="category" required>
 
-    </div>
+      <label for="image" class="form-label">Upload Image</label>
+      <input type="file" class="form-control" name="image" id="image" accept="image/*">
+
+      <button type="submit" class="btn btn-submit">Create Blog</button>
+
+      {% for message in messages %}
+      <p class="text-danger mt-3 mb-0">{{ message }}</p>
+      {% endfor %}
+    </form>
   </div>
 
   {% include 'footer.html' %}
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.ckeditor.com/4.25.1-lts/full/ckeditor.js"></script>
+  <script>
+    var isMobile = window.innerWidth < 576;
+
+    CKEDITOR.replace('editor', {
+      height: isMobile ? 220 : 300,
+      width: '100%',
+      resize_dir: 'vertical',
+      toolbarCanCollapse: true,
+      toolbarStartupExpanded: !isMobile,
+      toolbar: [
+        { name: 'clipboard',   items: ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo'] },
+        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
+        { name: 'paragraph',   items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+        { name: 'styles',      items: ['FontSize', 'Format'] },
+        { name: 'colors',      items: ['TextColor', 'BGColor'] },
+        { name: 'insert',      items: ['Image', 'Table', 'Link', 'Unlink'] },
+        { name: 'tools',       items: ['Maximize', 'Source'] }
+      ]
+    });
+
+    // CKEditor hides the textarea, so a "required" attribute would block submit.
+    // Validate the content manually instead.
+    document.getElementById('createForm').addEventListener('submit', function (e) {
+      var data = CKEDITOR.instances.editor.getData().replace(/<[^>]*>/g, '').trim();
+      if (!data) {
+        e.preventDefault();
+        alert('Please add some content to your blog post.');
+        CKEDITOR.instances.editor.focus();
+      }
+    });
+  </script>
 
 </body>
 

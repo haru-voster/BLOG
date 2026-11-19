@@ -1,6 +1,7 @@
 asgiref
-django
+Django>=5.2,<5.3
 Pillow
 sqlparse
-tzdatapip 
+tzdata
+django-ckeditor
 django-tinymce
